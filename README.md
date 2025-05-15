@@ -2,6 +2,11 @@
 
 This repository contains the Docker compose file for deploying the Spline Server.
 
+## ⚠️ Important Note
+
+If a **new Spline server** is being provisioned for the first time, this repository must be made **public**. This is required so that the `wget` command can successfully retrieve the `compose.yaml` file from GitHub during infrastructure provisioning.
+
+
 ## Deployment Instructions
 
 When changes are made to this repository and need to be deployed, follow these steps:
