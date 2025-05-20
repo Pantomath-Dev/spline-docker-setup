@@ -24,6 +24,12 @@ services:
       - /var/lib/arangodb3-apps:/var/lib/arangodb3-apps
     environment:
       ARANGO_NO_AUTH: 1
+    logging:
+      driver: fluentd
+      options:
+        tag: arangodb
+    networks:
+      - backend
 
   rest-server:
     image: ${SPLINE_SERVER_DOCKER_REPO_URL:-absaoss}/spline-rest-server:${SPLINE_SERVER_VERSION}
@@ -37,6 +43,12 @@ services:
     depends_on:
       db-init:
         condition: service_completed_successfully
+    logging:
+      driver: fluentd
+      options:
+        tag: spline-api
+    networks:
+      - backend
 
   db-init:
     image: ${SPLINE_SERVER_DOCKER_REPO_URL:-absaoss}/spline-admin:${SPLINE_SERVER_VERSION}
@@ -52,6 +64,12 @@ services:
       "
     depends_on:
       - arangodb
+    logging:
+      driver: fluentd
+      options:
+        tag: db-init
+    networks:
+      - backend
 
   run-examples:
     image: ${SPLINE_AGENT_DOCKER_REPO_URL:-absaoss}/spline-spark-agent:${SPLINE_AGENT_VERSION}
@@ -72,6 +90,12 @@ services:
       SPLINE_PRODUCER_URL: "http://rest-server:8080/producer"
     depends_on:
       - rest-server
+    logging:
+      driver: fluentd
+      options:
+        tag: examples
+    networks:
+      - backend
 
   ui:
     image: ${SPLINE_UI_DOCKER_REPO_URL:-absaoss}/spline-web-ui:${SPLINE_UI_VERSION}
@@ -85,3 +109,13 @@ services:
       - ${SPLINE_UI_PORT}:8080
     depends_on:
       - rest-server
+    logging:
+      driver: fluentd
+      options:
+        tag: spline-ui
+    networks:
+      - backend
+
+networks:
+  backend:
+

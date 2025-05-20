@@ -1,0 +1,18 @@
+  services:
+    fluent-bit:
+      image: 687612744326.dkr.ecr.us-east-2.amazonaws.com/fluent-bit:2.28.5
+      container_name: fluent-bit
+      volumes:
+        - ./parsers.conf:/fluent-bit/etc/parsers.conf
+        - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      environment:
+        - AWS_REGION=us-east-2
+        - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+        - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+        - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
+        - FLB_LOG_LEVEL=debug
+        - CUSTOMER_ID=${CUSTOMER_ID:-1}
+        - ENVIRONMENT=${ENVIRONMENT:-dev}
+      ports:
+        - "24224:24224"
+        - "24224:24224/udp"
