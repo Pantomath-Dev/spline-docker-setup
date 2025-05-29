@@ -24,6 +24,8 @@ services:
       - /var/lib/arangodb3-apps:/var/lib/arangodb3-apps
     environment:
       ARANGO_NO_AUTH: 1
+      ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY: 9GB
+      ARANGODB_OVERRIDE_DETECTED_NUMBER_OF_CORES: 2
     mem_limit: 9g
     cpus: 2
     logging:
